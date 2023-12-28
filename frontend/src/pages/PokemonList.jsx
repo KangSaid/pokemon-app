@@ -1,13 +1,13 @@
 import React from 'react'
 import {Container, Row, Col} from 'react-bootstrap'
-import PokemonRequest from '../util/PokemonRequest'
 import PokemonCardComponent from '../components/PokemonCardComponent'
+import LoadInfinite from '../util/LoadInfinite'
 
 const PokemonList = () => {
 
-  const {data : result, error} = PokemonRequest('/pokemon')
-  if(error) return <h1>Something went wrong</h1>
-  if(!result) return <h1>Loading</h1>
+  const {data, error, isLoading, loadMore} = LoadInfinite('/pokemon',20)
+
+  if(isLoading || error) return <div>Loading ...</div>
 
   return (
     <div className='pokemon-list'>
@@ -20,15 +20,17 @@ const PokemonList = () => {
         <Row>
           <div className="pokemon-content">
             {
-              result.results.map((pokemon) => (
-                <PokemonCardComponent key= {pokemon.name} pokemon={pokemon}/>
-              ))
+              data.map((pokemons) => {
+                return pokemons.map((pokemon,index) => (
+                  <PokemonCardComponent key= {index} pokemon={pokemon}/>
+                ))
+              })
             }
           </div>
           <Row>
             <Col>
               <div className="next">
-                <button className="next-btn">
+                <button className="next-btn" onClick={loadMore}>
                   Load More &darr;
                 </button>
               </div>

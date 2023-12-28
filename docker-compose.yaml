@@ -1,0 +1,48 @@
+version: '3.8'
+services:
+  backend:
+    build: ./backend
+    container_name: pokemon_backend
+    image: pokemon_backend
+    ports:
+      - 80:3000
+    volumes:
+      - logs:/app/logs
+      - ./backend:/app
+      - /app/node_modules
+    stdin_open: true
+    tty: true
+    networks:
+      - pokemon_app
+    depends_on:
+      db:
+        condition: service_completed_successfully
+  frontend:
+    build: ./frontend
+    container_name: pokemon_frontend
+    image: pokemon_frontend
+    ports:
+      - 3000:3000
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    stdin_open: true 
+    tty: true 
+    networks:
+      - pokemon_app 
+  db:
+    container_name: pokemon_db
+    image: 'mysql:8.0'
+    env_file:
+      - ./mysql.env
+    ports:
+      - 3306:3306
+    volumes:
+      - pokemon_db:/var/lib/mysql
+    networks:
+      - pokemon_app
+volumes:
+  logs:
+  pokemon_db:
+networks:
+  pokemon_app:

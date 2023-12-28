@@ -2,10 +2,12 @@ import React from 'react'
 import {Container, Row, Col} from 'react-bootstrap'
 import PokemonCardComponent from '../components/PokemonCardComponent'
 import LoadInfinite from '../util/LoadInfinite'
+import {useNavigate} from 'react-router-dom'
 
 const PokemonList = () => {
 
   const {data, error, isLoading, loadMore} = LoadInfinite('/pokemon',20)
+  const navigate = useNavigate();
 
   if(isLoading || error) return <div>Loading ...</div>
 
@@ -22,7 +24,7 @@ const PokemonList = () => {
             {
               data.map((pokemons) => {
                 return pokemons.map((pokemon,index) => (
-                  <PokemonCardComponent key= {index} pokemon={pokemon}/>
+                  <PokemonCardComponent key= {index} pokemon={pokemon} handleClick={() => navigate(`pokemondetail/${pokemon.name}`)}/>
                 ))
               })
             }

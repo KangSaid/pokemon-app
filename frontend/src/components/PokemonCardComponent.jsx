@@ -2,7 +2,7 @@ import React from 'react';
 import PokemonRequest from '../util/PokemonRequest';
 import LoadingComponent from './LoadingComponent';
 
-const PokemonCardComponent = ({pokemon}) => {
+const PokemonCardComponent = ({pokemon,handleClick}) => {
     const { name } = pokemon
     const { data, error } = PokemonRequest('/pokemon',name)
 
@@ -10,7 +10,7 @@ const PokemonCardComponent = ({pokemon}) => {
     if (!data) return <LoadingComponent/>;
 
     return (
-        <div className='pokemon-card effect-card rounded-3'>
+        <div className='pokemon-card effect-card rounded-3' onClick={handleClick}>
             <div className='image-card'>
                 <img
                     className='rounded-top-3'

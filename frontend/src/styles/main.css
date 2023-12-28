@@ -153,3 +153,65 @@
 .next button:hover {
     color: #333;
 }
+
+/* POKEMON DETAIL */
+.pokemon-detail {
+    padding-top:150px;
+    color: var(--color-text);
+}
+
+.pokemon-detail .row:nth-child(1) h1 {
+    margin-bottom: 100px;
+}
+
+.card-detail-image {
+    position: relative;
+}
+
+.card-detail-image img {
+    position: absolute;
+    left: 50%;
+    top:-70px;
+    max-width: 200px;
+    transition: all .15s ease;
+    transform: translate(-50%, -30%);
+    border-radius: .375rem;
+}
+  
+.card-profile-image img:hover {
+    transform: translate(-50%, -33%);
+}
+
+.pokemon-type {
+    padding: 8px 8px;
+    text-transform: uppercase;
+    border-radius: 10px;
+}
+
+.card-profile-stats {
+    padding: 1rem 0;
+}
+  
+.card-profile-stats>div {
+    margin-right: 1rem;
+    padding: .875rem;
+    text-align: center;
+}
+  
+.card-profile-stats>div:last-child {
+    margin-right: 0;
+}
+  
+.card-profile-stats>div .heading {
+    font-size: 1.1rem;
+    font-weight: bold;
+    display: block;
+}
+  
+.card-profile-stats>div .description {
+    font-size: .875rem;
+    color: #7f8284;
+}
+
+
+/* PROGRESS BAR */

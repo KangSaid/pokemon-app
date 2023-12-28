@@ -7,7 +7,7 @@ const PokemonRequest = (path, name) => {
         throw new Error('Path is required')
     }
 
-    const url = name ? baseUrl + path + '/' + name : baseUrl;
+    const url = name ? baseUrl + path + '/' + name : baseUrl + path;
     const {data, error} = useSWR(url);
 
     return {data , error}

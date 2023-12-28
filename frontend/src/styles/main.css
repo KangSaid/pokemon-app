@@ -129,3 +129,27 @@
 .bg-loading {
     background-color: #cacaca;
 }
+
+/* button load more */
+.next {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin:4rem 0;
+}
+
+.next button {
+    padding: 1rem 2rem;
+    border: none;
+    font-family: inherit;
+    font-size:inherit;
+    font-weight: 500;
+    color: #7263f3;
+    background-color: var(--primary-color);
+    transition: all 0.3s ease;
+}
+
+.next button:hover {
+    color: #333;
+}

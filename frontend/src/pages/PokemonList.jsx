@@ -25,6 +25,15 @@ const PokemonList = () => {
               ))
             }
           </div>
+          <Row>
+            <Col>
+              <div className="next">
+                <button className="next-btn">
+                  Load More &darr;
+                </button>
+              </div>
+            </Col>
+          </Row>
         </Row>
       </Container>
     </div>

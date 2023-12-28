@@ -1,7 +1,14 @@
 import React from 'react'
 import {Container, Row, Col} from 'react-bootstrap'
+import PokemonRequest from '../util/PokemonRequest'
+import PokemonCardComponent from '../components/PokemonCardComponent'
 
 const PokemonList = () => {
+
+  const {data : result, error} = PokemonRequest('/pokemon')
+  if(error) return <h1>Something went wrong</h1>
+  if(!result) return <h1>Loading</h1>
+
   return (
     <div className='pokemon-list'>
       <Container>
@@ -12,7 +19,11 @@ const PokemonList = () => {
         </Row>
         <Row>
           <div className="pokemon-content">
-            
+            {
+              result.results.map((pokemon) => (
+                <PokemonCardComponent key= {pokemon.name} pokemon={pokemon}/>
+              ))
+            }
           </div>
         </Row>
       </Container>

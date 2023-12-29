@@ -14,7 +14,7 @@ model pokemon {
   id           Int      @id @default(autoincrement())
   pokemon_id   Int
   fib          Int?
-  nickname     String
+  nickname     String   @unique 
   fib_nickname String?
   createdAt    DateTime @default(now())
 }

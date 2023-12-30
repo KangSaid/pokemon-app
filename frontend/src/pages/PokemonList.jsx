@@ -24,20 +24,20 @@ const PokemonList = () => {
             {
               data.map((pokemons) => {
                 return pokemons.map((pokemon,index) => (
-                  <PokemonCardComponent key= {index} pokemon={pokemon} handleClick={() => navigate(`pokemondetail/${pokemon.name}`)}/>
+                  <PokemonCardComponent key= {index} pokemon={pokemon} handleClick={() => navigate(`pokemondetail/${pokemon.name}`)} style={{ cursor: 'pointer' }}/>
                 ))
               })
             }
           </div>
-          <Row>
-            <Col>
-              <div className="next">
-                <button className="next-btn" onClick={loadMore}>
-                  Load More &darr;
-                </button>
-              </div>
-            </Col>
-          </Row>
+        </Row>
+        <Row>
+          <Col>
+            <div className="next">
+              <button className="next-btn" onClick={loadMore}>
+                Load More &darr;
+              </button>
+            </div>
+          </Col>
         </Row>
       </Container>
     </div>

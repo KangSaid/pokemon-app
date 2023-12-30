@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import MyPokemonCardComponent from '../components/MyPokemonCardComponent';
 import { LoadInfinitePokeDex } from '../util/LoadInfinite';
@@ -16,12 +16,12 @@ const MyPokemon = () => {
       pokemonName: '',
       results: '',
       isLoading: false,
-      id : '',
-      title: ''
+      title: '',
+      pokemonId: ''
     })
 
-    const handleDialog = (isLoading, title, pokemonName,results,id) => {
-      setDialog(prev => ({...prev, isLoading : isLoading, title: title,results: results, pokemonName: pokemonName,id:id}))
+    const handleDialog = (isLoading, title, pokemonName,results,pokemonId) => {
+      setDialog(prev => ({...prev, isLoading : isLoading, title: title,results: results, pokemonName: pokemonName, pokemonId:pokemonId}))
     }
 
     if(isLoading || error) return <div>Loading ...</div>
@@ -40,17 +40,25 @@ const MyPokemon = () => {
       
     }
 
-    const handleRelease = (id,pokemonId,pokemonName) => {
-        handleDialog(true, 'Release',pokemonName,'', pokemonId)
+
+    const handleRelease = async (id,pokemonId,pokemonName) => {
+        handleDialog(true, 'Release',pokemonName,"", pokemonId)
+        
+        const release = await axios.delete(`http://localhost/pokemons/release/${id}`)
+        console.log(release)
+        setTimeout(() => {
+          release.data.release ? handleDialog(true,'Release Successfully',pokemonName,true,pokemonId) : handleDialog(true,release.data.msg,pokemonName,false,pokemonId)
+        }, 1000);
     }
 
     const handleClose = () => {
       setDialog(prev => ({...prev, isLoading : false }))
+      dialog.results && mutate()
     }
     
     return (
         <>
-        {dialog.isLoading && (<DialogProcessComponent title={dialog.title} id={dialog.id} pokemonName={dialog.pokemonName} results={dialog.results} onClose={handleClose}/>) }
+        {dialog.isLoading && (<DialogProcessComponent title={dialog.title}  pokemonId={dialog.pokemonId} pokemonName={dialog.pokemonName} results={dialog.results} onClose={handleClose}/>) }
         <div className='pokemon-list'>
             <Container>
                 <Row>

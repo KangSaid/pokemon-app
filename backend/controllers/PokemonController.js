@@ -55,7 +55,7 @@ export const releasePokemon = async (req, res) => {
     try {
         const id = parseInt(req.params.id)
         let prima = false;
-        const randomInteger = Math.floor((Math.random() * 100) + 1);
+        const randomInteger = Math.floor((Math.random() * 20) + 1);
         let pembagi = 0
         for(let i = 1; i <= randomInteger; i++){
             if(randomInteger%i == 0){
@@ -74,7 +74,7 @@ export const releasePokemon = async (req, res) => {
             })
         )
 
-        const result = !release ? { release: prima, msg: "Oops, you fail release this pokemon, please try again." } : { release: prima, ...release }
+        const result = !release ? { release: prima, msg: "Oops, you failed release this pokemon, please try again." } : { release: prima, ...release }
 
         res.status(200).json(result)
 

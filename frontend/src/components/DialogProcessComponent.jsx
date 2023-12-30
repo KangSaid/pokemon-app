@@ -1,14 +1,13 @@
 import React from 'react';
 import SpinLoading from './SpinLoading';
 import PokemonRequest from '../util/PokemonRequest';
+import Alert from 'react-bootstrap/Alert';
 
-const DialogProcessComponent = ({pokemonName,title, results, onClose, id}) => {
-    let image = '';
-    if(id != ""){
-        const { data, error } = PokemonRequest('/pokemon', id);
-        image = data.sprites.other.home.front_shiny;
-    }
 
+const DialogProcessComponent = ({ pokemonName, title, results, onClose, pokemonId }) => {
+    
+    const { data, error } = PokemonRequest('/pokemon', pokemonId);
+    const image = data.sprites.other.home.front_shiny;
 
     return (
         <div className={`dialog show`}>
@@ -20,12 +19,32 @@ const DialogProcessComponent = ({pokemonName,title, results, onClose, id}) => {
                     <div className='dialog-img-body mb-5'>
                         <img src={image} alt='' />
                     </div>
-                    <div className='dialog-message'>
-                        <SpinLoading/>
-                    </div>
-                    <p className='dialog-message mb-4' style={{ fontSize: '14px' }}>
-                        Process {title}...
-                    </p>
+                    {
+                        results === "" ? (
+                            <>
+                                <div className='dialog-message'>
+                                    <SpinLoading />
+                                </div>
+                                <p className='dialog-message mb-4' style={{ fontSize: '14px' }}>
+                                    Process {title}...
+                                </p>
+                            </>
+                        ) : (
+                            <>
+                            <div className='dialog-message mb-4' style={{ fontSize: '14px' }}>
+                                <Alert variant={results ? 'success' : 'danger'}>
+                                    {title}
+                                </Alert>
+                            </div>
+                            <div className='dialog-footer'>
+                                <button className='btn-dialog btn-dialog-cancel' onClick={() => onClose()}>
+                                    Cancel
+                                </button>
+                            </div>
+                            </>
+                        )
+                    }
+                    
                 </div>
             </div>
         </div>

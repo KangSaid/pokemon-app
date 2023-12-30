@@ -35,7 +35,7 @@ export const getPokemon = async (req, res) => {
         if (pokemonCount != 0) {
 
             if (req.query.limit) return getPokemonPage(req, res, pokemonCount)
-            
+
             const response = await prisma.pokemon.findMany({
                 take: 20,
                 orderBy: {
@@ -51,6 +51,58 @@ export const getPokemon = async (req, res) => {
 
 
         res.status(200).json(result)
+    } catch (error) {
+        res.status(404).json({ msg: error.message })
+    }
+}
+
+export const updateNickname = async (req, res) => {
+
+    try {
+
+        const id = parseInt(req.params.id)
+
+        const data = await prisma.pokemon.findUnique({
+            where: {
+                id: id
+            }
+        })
+
+        const nickname = data?.nickname
+        const fib = data?.fib == null ? 1 : (data.fib + 1)
+        let fibAngka = 0
+
+        switch (fib) {
+            case 1:
+                fibAngka = 0
+                break;
+            case 2:
+                fibAngka = 1
+                break;
+            case 3:
+                fibAngka = 1
+                break;
+            default:
+                fibAngka = fib - 2
+                break;
+        }
+
+        if (fib > 3) {
+            fibAngka = fibonacci(fibAngka)
+        }
+
+        const response = await prisma.pokemon.update({
+            where: {
+                id: id
+            },
+            data: {
+                fib: fib,
+                fib_nickname: nickname + '-' +  fibAngka
+            }
+        })
+
+        res.status(200).json(response)
+
     } catch (error) {
         res.status(404).json({ msg: error.message })
     }
@@ -80,3 +132,9 @@ const getPokemonPage = async (req, res, count) => {
     }
 
 }
+
+const fibonacci = (num) => {
+    if (num <= 1) return 1;
+    return fibonacci(num - 1) + fibonacci(num - 2);
+}
+

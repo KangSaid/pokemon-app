@@ -30,25 +30,20 @@ export const getPokemon = async (req, res) => {
     try {
 
         const pokemonCount = await prisma.pokemon.count()
-        let result = { msg: 'no data' };
 
-        if (pokemonCount != 0) {
+        if (req.query.limit) return getPokemonPage(req, res, pokemonCount)
 
-            if (req.query.limit) return getPokemonPage(req, res, pokemonCount)
-
-            const response = await prisma.pokemon.findMany({
-                take: 20,
-                orderBy: {
-                    id: 'asc'
-                }
-            })
-
-            result = {
-                count: pokemonCount,
-                results: response
+        const response = await prisma.pokemon.findMany({
+            take: 20,
+            orderBy: {
+                id: 'asc'
             }
-        }
+        })
 
+        const result = {
+            count: pokemonCount,
+            results: response
+        }
 
         res.status(200).json(result)
     } catch (error) {

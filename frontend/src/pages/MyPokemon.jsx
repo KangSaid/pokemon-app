@@ -1,15 +1,34 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import MyPokemonCardComponent from '../components/MyPokemonCardComponent';
 import { LoadInfinitePokeDex } from '../util/LoadInfinite';
+import axios from 'axios'
 
 const MyPokemon = () => {
-    const { data, error, isLoading, loadMore } = LoadInfinitePokeDex('/pokemons', 20);
+    const { data, error, isLoading, loadMore, mutate } = LoadInfinitePokeDex('/pokemons', 20);
+    const [loadingButtonRename, setLoadingButtonRename] = useState({
+      isLoading : false,
+      id : ''
+    })
+
     if(isLoading || error) return <div>Loading ...</div>
 
-    console.log(data)
+    const handleRename = async (id) => {
+      try {
+        setLoadingButtonRename({isLoading: true, id : id})
+        await axios.patch(`http://localhost/pokemons/${id}`,{
+          id: id
+        })
+        mutate()
+        setLoadingButtonRename({isLoading: false, id : id})
+      } catch (error) {
+        console.log(error.message)
+      }
+      
+    }
     
     return (
+        <>
         <div className='pokemon-list'>
             <Container>
                 <Row>
@@ -25,7 +44,7 @@ const MyPokemon = () => {
                             {
                               data.map((pokemons) => {
                                 return pokemons.map((pokemon,index) => (
-                                  <MyPokemonCardComponent key={index} pokemon={pokemon}/>
+                                  <MyPokemonCardComponent key={index} pokemon={pokemon} onHandleRename={() => handleRename(pokemon.id)} isLoadingButtonRename = {loadingButtonRename}/>
                                 ))
                               })
                             }
@@ -45,6 +64,7 @@ const MyPokemon = () => {
                 }
             </Container>
         </div>
+        </>
     );
 };
 

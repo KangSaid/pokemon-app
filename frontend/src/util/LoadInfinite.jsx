@@ -31,7 +31,7 @@ export const LoadInfinitePokeDex = (path, limit) => {
         return baseUrl2+`${path}?offset=${pageNumber}&limit=${limit}`;
     };
 
-    const {data , error, size, setSize } = useSWRInfinite(getKey, fetcher)
+    const {data , error, size, setSize, mutate } = useSWRInfinite(getKey, fetcher)
 
     const loadMore = () => setSize(size + 1)
 
@@ -39,7 +39,8 @@ export const LoadInfinitePokeDex = (path, limit) => {
         data: data,
         isLoading: !error && !data,
         isError : error,
-        loadMore
+        loadMore,
+        mutate: mutate
     }
 }
 

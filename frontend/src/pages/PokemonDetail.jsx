@@ -31,7 +31,6 @@ const PokemonDetail = () => {
 
     const confirmDialog = (choose) => {
         if (choose) {
-            console.log(idPokemonRef.current);
             handleDialog("", false);
         } else {
             handleDialog("", false);

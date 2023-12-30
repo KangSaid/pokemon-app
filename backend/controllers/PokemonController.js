@@ -18,7 +18,7 @@ export const createPokemon = async (req, res) => {
             }
         }));
 
-        const result = !pokemon ? { probality: probality, msg: "Oops, you fail catching this pokemon, please try again." } : { ...pokemon, probality: true }
+        const result = !pokemon ? { probality: probality, msg: "Oops, you fail catching this pokemon, please try again." } : { probality: true, ...pokemon }
 
         res.status(201).json(result)
     } catch (error) {
@@ -48,6 +48,38 @@ export const getPokemon = async (req, res) => {
         res.status(200).json(result)
     } catch (error) {
         res.status(404).json({ msg: error.message })
+    }
+}
+
+export const releasePokemon = async (req, res) => {
+    try {
+        const id = parseInt(req.params.id)
+        let prima = false;
+        const randomInteger = Math.floor((Math.random() * 100) + 1);
+        let pembagi = 0
+        for(let i = 1; i <= randomInteger; i++){
+            if(randomInteger%i == 0){
+                pembagi++
+            }
+        }
+
+        if(pembagi == 2){
+            prima = true 
+        }
+
+        const release = prima && (await prisma.pokemon.delete({
+                where: {
+                    id: id 
+                }
+            })
+        )
+
+        const result = !release ? { release: prima, msg: "Oops, you fail release this pokemon, please try again." } : { release: prima, ...release }
+
+        res.status(200).json(result)
+
+    } catch (error) {
+        res.status(400).json({msg: error.message});
     }
 }
 

@@ -4,7 +4,7 @@ import PokemonRequest from '../util/PokemonRequest';
 import LoadingComponent from './LoadingComponent';
 import Spinner from 'react-bootstrap/Spinner';
 
-const MyPokemonCardComponent = ({ pokemon, onHandleRename, isLoadingButtonRename }) => {
+const MyPokemonCardComponent = ({ pokemon, onHandleRename, isLoadingButtonRename, onHandleRelease }) => {
     const { id, pokemon_id, nickname, fib_nickname } = pokemon;
     const { data, error } = PokemonRequest('/pokemon', pokemon_id);
 
@@ -22,7 +22,7 @@ const MyPokemonCardComponent = ({ pokemon, onHandleRename, isLoadingButtonRename
                 <h4>{fib_nickname == null ? nickname : fib_nickname}</h4>
             </div>
             <div className='footer-card'>
-                <Button variant='danger' size='sm'>
+                <Button variant='danger' size='sm' onClick={onHandleRelease}>
                     Release
                 </Button>
                 <Button variant='success' size='sm' onClick={onHandleRename} disabled={isLoading}>

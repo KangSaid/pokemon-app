@@ -3,6 +3,7 @@ import { Container, Row, Col } from 'react-bootstrap';
 import MyPokemonCardComponent from '../components/MyPokemonCardComponent';
 import { LoadInfinitePokeDex } from '../util/LoadInfinite';
 import axios from 'axios'
+import DialogProcessComponent from '../components/DialogProcessComponent';
 
 const MyPokemon = () => {
     const { data, error, isLoading, loadMore, mutate } = LoadInfinitePokeDex('/pokemons', 20);
@@ -10,6 +11,18 @@ const MyPokemon = () => {
       isLoading : false,
       id : ''
     })
+
+    const [dialog, setDialog] = useState({
+      pokemonName: '',
+      results: '',
+      isLoading: false,
+      id : '',
+      title: ''
+    })
+
+    const handleDialog = (isLoading, title, pokemonName,results,id) => {
+      setDialog(prev => ({...prev, isLoading : isLoading, title: title,results: results, pokemonName: pokemonName,id:id}))
+    }
 
     if(isLoading || error) return <div>Loading ...</div>
 
@@ -26,9 +39,18 @@ const MyPokemon = () => {
       }
       
     }
+
+    const handleRelease = (id,pokemonId,pokemonName) => {
+        handleDialog(true, 'Release',pokemonName,'', pokemonId)
+    }
+
+    const handleClose = () => {
+      setDialog(prev => ({...prev, isLoading : false }))
+    }
     
     return (
         <>
+        {dialog.isLoading && (<DialogProcessComponent title={dialog.title} id={dialog.id} pokemonName={dialog.pokemonName} results={dialog.results} onClose={handleClose}/>) }
         <div className='pokemon-list'>
             <Container>
                 <Row>
@@ -44,7 +66,7 @@ const MyPokemon = () => {
                             {
                               data.map((pokemons) => {
                                 return pokemons.map((pokemon,index) => (
-                                  <MyPokemonCardComponent key={index} pokemon={pokemon} onHandleRename={() => handleRename(pokemon.id)} isLoadingButtonRename = {loadingButtonRename}/>
+                                  <MyPokemonCardComponent key={index} pokemon={pokemon} onHandleRename={() => handleRename(pokemon.id)} isLoadingButtonRename = {loadingButtonRename} onHandleRelease={() => handleRelease(pokemon.id, pokemon.pokemon_id, (pokemon.fib_nickname == null ? pokemon.nickname : pokemon.fib_nickname) )}/>
                                 ))
                               })
                             }

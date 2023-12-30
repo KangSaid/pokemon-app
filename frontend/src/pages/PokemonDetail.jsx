@@ -41,7 +41,7 @@ const PokemonDetail = () => {
     const name = params.name;
     const { data, error } = PokemonRequest('/pokemon', name);
 
-    const isLoading = !data && !error;
+    const isLoading = !data & !error;
 
     const typeColors = {
         normal: '#A8A878',

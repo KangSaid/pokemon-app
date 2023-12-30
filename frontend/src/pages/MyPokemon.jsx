@@ -4,7 +4,7 @@ import MyPokemonCardComponent from '../components/MyPokemonCardComponent';
 import { LoadInfinitePokeDex } from '../util/LoadInfinite';
 
 const MyPokemon = () => {
-    const { data, error, isLoading, loadMore } = LoadInfinitePokeDex('/pokemons', 2);
+    const { data, error, isLoading, loadMore } = LoadInfinitePokeDex('/pokemons', 20);
     if(isLoading || error) return <div>Loading ...</div>
     
     return (

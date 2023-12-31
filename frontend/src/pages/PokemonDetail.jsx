@@ -3,39 +3,17 @@ import { Container, Row, Col, Card, Button } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import PokemonRequest from '../util/PokemonRequest';
 import SpinLoading from '../components/SpinLoading';
-import DialogComponent from '../components/DialogComponent';
+import DialogProcessComponent from '../components/DialogProcessComponent';
+
 
 const PokemonDetail = () => {
+
     const [dialog, setDialog] = useState({
-        message: '',
-        isLoading : false,
-        name: '',
-        image: ''
+        results: '',
+        isLoading: false,
+        title: '',
+        form: ''
     })
-
-    const idPokemonRef = useRef();
-
-    const handleDialog = (message, isLoading, name, image) => {
-        setDialog({ message, isLoading, name, image });
-    };
-
-    const handleCatch = (id, name, image) => {
-        handleDialog(
-            'Are you sure you want to catch',
-            true,
-            name,
-            image
-        )
-        idPokemonRef.current = id
-    }
-
-    const confirmDialog = (choose) => {
-        if (choose) {
-            handleDialog("", false);
-        } else {
-            handleDialog("", false);
-        }
-    };
 
     const params = useParams();
     const name = params.name;
@@ -66,9 +44,33 @@ const PokemonDetail = () => {
 
     const color = typeColors[data?.types[0]?.type?.name]
 
+    const handleDialog = (results, title,isLoading, form) => {
+        setDialog(prev => ({...prev, isLoading : isLoading, results: results, title: title, form:form}))
+    }
+
+    const handleClose = () => {
+        setDialog(prev => ({...prev, isLoading : false }))
+    }
+
+    const handleCatch = async () => {
+        handleDialog('','Probability',true)
+        //probalitiy 50% 
+        const randomInteger = Math.floor((Math.random() * 10) + 1);
+        const probality = randomInteger <= 5 ? true : false;
+
+        setTimeout(() => {
+            if(!probality){
+                handleDialog(false,`Oops, you can't catching this pokemon, please try again.`,true)
+            }else{
+                //show form
+                handleDialog(true,'',true,true)
+            }
+        }, 1000);
+    }
+
     return (
         <>
-            {dialog.isLoading && (<DialogComponent message={dialog.message} name={dialog.name} onDialog={confirmDialog} image={dialog.image}/>)}
+            {dialog.isLoading && (<DialogProcessComponent title={dialog.title} pokemonId={data.id}  pokemonName={data.name} results={dialog.results} image={data.sprites.other.home.front_shiny} form={dialog.form} onClose={handleClose}/>) }
             <div className='w-100 min-vh-100' style={{ backgroundColor: isLoading ? 'white' : color }}>
                 <div className='pokemon-detail'>
                     <Container>
@@ -100,7 +102,7 @@ const PokemonDetail = () => {
                                                     style={{ color: color, outline: `2px dashed ${color}` }}>
                                                     {data.types[0].type.name}
                                                 </div>
-                                                <Button variant='dark' onClick={() => handleCatch(data.id,data.name,data.sprites.other.home.front_shiny)}>Catch</Button>
+                                                <Button variant='dark' onClick={handleCatch}>Catch</Button>
                                             </div>
                                         </Card.Header>
                                         <Card.Body className='pt-0'>

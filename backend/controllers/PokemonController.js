@@ -7,20 +7,15 @@ export const createPokemon = async (req, res) => {
 
     try {
 
-        //probalitiy 50% 
-        const randomInteger = Math.floor((Math.random() * 10) + 1);
-        const probality = randomInteger <= 5 ? true : false;
-
-        const pokemon = probality && (await prisma.pokemon.create({
+        //after probalitiy 50% 
+        const pokemon = await prisma.pokemon.create({
             data: {
                 pokemon_id: pokemon_id,
                 nickname: nickname,
             }
-        }));
+        });
 
-        const result = !pokemon ? { probality: probality, msg: "Oops, you fail catching this pokemon, please try again." } : { probality: true, ...pokemon }
-
-        res.status(201).json(result)
+        res.status(201).json(pokemon)
     } catch (error) {
         res.status(404).json({ msg: error.message })
     }
@@ -80,6 +75,19 @@ export const releasePokemon = async (req, res) => {
 
     } catch (error) {
         res.status(400).json({msg: error.message});
+    }
+}
+
+export const getPokemonByName = async (req,res) => {
+    try {
+        const response  = await prisma.pokemon.findUnique({
+            where: {
+                nickname : req.params.nickname
+            }
+        })
+        res.status(200).json(response)
+    } catch (error) {
+        res.status(404).json({msg: error.message})
     }
 }
 

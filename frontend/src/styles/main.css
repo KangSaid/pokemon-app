@@ -383,6 +383,16 @@
     color: #ffffff;
 }
 
+.btn-dialog-continue {
+    background: #f8ecec;
+    color: #000000;
+}
+
+.btn-dialog-continue:hover {
+    background: #000000;
+    color: #ffffff;
+}
+
 @keyframes fade_show {
     0% {
         opacity: 0;

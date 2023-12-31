@@ -45,7 +45,6 @@ const MyPokemon = () => {
         handleDialog(true, 'Release',pokemonName,"", pokemonId)
         
         const release = await axios.delete(`http://localhost/pokemons/release/${id}`)
-        console.log(release)
         setTimeout(() => {
           release.data.release ? handleDialog(true,'Release Successfully',pokemonName,true,pokemonId) : handleDialog(true,release.data.msg,pokemonName,false,pokemonId)
         }, 1000);

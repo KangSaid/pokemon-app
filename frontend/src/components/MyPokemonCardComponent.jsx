@@ -26,14 +26,7 @@ const MyPokemonCardComponent = ({ pokemon, onHandleRename, isLoadingButtonRename
                     Release
                 </Button>
                 <Button variant='success' size='sm' onClick={onHandleRename} disabled={isLoading}>
-                    {isLoading ? (
-                        <>
-                            <Spinner as='span' animation='grow' size='sm' role='status' aria-hidden='true' />
-                            {' '}Loading...
-                        </>
-                    ) : (
-                        'Rename'
-                    )}
+                    Rename
                 </Button>
             </div>
         </div>

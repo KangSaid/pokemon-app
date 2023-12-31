@@ -4,10 +4,12 @@ import PokemonRequest from '../util/PokemonRequest';
 import Alert from 'react-bootstrap/Alert';
 
 
-const DialogProcessComponent = ({ pokemonName, title, results, onClose, pokemonId }) => {
+const DialogProcessComponent = ({ pokemonName, title, results, onClose, pokemonId, image }) => {
     
-    const { data, error } = PokemonRequest('/pokemon', pokemonId);
-    const image = data.sprites.other.home.front_shiny;
+    if(typeof image == 'undefined'){
+        const { data, error } = PokemonRequest('/pokemon', pokemonId);
+        image = data.sprites.other.home.front_shiny;
+    }
 
     return (
         <div className={`dialog show`}>
